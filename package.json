@@ -35,7 +35,7 @@
     "core": "npm run core:tsc && npm run core:copy && npm run core:bundle",
     "core:tsc": "tsc --project src/engine/tsconfig.json --incremental true --tsBuildInfoFile .tsbuildinfo",
     "core:copy": "copyfiles -u 2 ./src/engine/**/*.png ./src/engine/**/*.css ./src/engine/**/*.glsl ./build/dist/",
-    "core:bundle": "webpack --config webpack.config.js --mode production",
+    "core:bundle": "webpack --config webpack.config.js --progress --mode production",
     "core:watch": "npm run core:bundle -- --watch",
     "lint": "npm run eslint && npm run eslint:spec",
     "eslint": "eslint \"src/engine/**/*.ts\"",
@@ -43,10 +43,8 @@
     "eslint:spec": "eslint \"src/spec/**/*.ts\"",
     "visual": "start-storybook",
     "build-storybook": "build-storybook -o build-storybook",
-    "sandbox:copy": "copyfiles -u 2 \"./build/dist/**/*.*\" \"./build/dist/*.*\" ./sandbox/lib/",
-    "sandbox:build": "tsc --project ./sandbox",
-    "sandbox": "serve ./sandbox -l 3001 -n",
-    "legacy-visual": "npm run sandbox:copy && npm run sandbox:build",
+    "sandbox:build": "webpack --config webpack.config.sandbox.js --progress --mode development",
+    "sandbox": "webpack serve --config webpack.config.sandbox.js --progress --mode development --open",
     "test": "karma start",
     "test:watch": "karma start --auto-watch --single-run=false",
     "coveralls": "coveralls < coverage/lcov.info",
@@ -112,7 +110,8 @@
     "typescript": "4.2.2",
     "url-loader": "4.1.1",
     "webpack": "5.24.3",
-    "webpack-cli": "4.5.0"
+    "webpack-cli": "4.5.0",
+    "webpack-dev-server": "3.11.2"
   },
   "dependencies": {
     "core-js": "3.9.1"

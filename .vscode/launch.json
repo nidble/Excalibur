@@ -6,25 +6,15 @@
             "request": "attach",
             "name": "Attach Karma Chrome",
             "address": "127.0.0.1",
-            "port": 9333,
+            "port": 9334,
             "sourceMaps": true,
+            "sourceMapPathOverrides": {
+              "*": "${webRoot}/*"
+            },
             "pathMapping": {
               "/": "${workspaceRoot}",
               "/base/": "${workspaceRoot}/"
             }
-        },
-        {
-            "name": "Attach index.html",
-            "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost:8081/html/index.html",
-            "runtimeArgs": [
-               "--new-window",
-               "--remote-debugging-port=9222" // standard chrome debugging port
-            ],
-            "webRoot": "src",
-            "diagnosticLogging": true,
-            "sourceMaps": true
         }
     ]
 }

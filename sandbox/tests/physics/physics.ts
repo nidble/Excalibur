@@ -1,4 +1,4 @@
-/// <reference path='../../lib/excalibur.d.ts' />
+import * as ex from '@excalibur';
 
 var game = new ex.Engine({
   width: 600,

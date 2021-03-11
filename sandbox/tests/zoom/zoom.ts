@@ -1,5 +1,5 @@
-﻿/// <reference path='../../lib/excalibur.d.ts' />
-
+﻿import * as ex from '@excalibur';
+ex.Flags.enable(ex.Legacy.LegacyDrawing);
 var game = new ex.Engine({
   width: 600,
   height: 400,

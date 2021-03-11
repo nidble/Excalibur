@@ -64,7 +64,7 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin({ patterns: ['excalibur.d.ts'] }),
     new webpack.DefinePlugin({
-      'process.env.__EX_VERSION': JSON.stringify(version)
+      '(globalThis as any).__EX_VERSION': JSON.stringify(version)
     }),
     new webpack.BannerPlugin(
       `${pkg.name} - ${version} - ${dt}

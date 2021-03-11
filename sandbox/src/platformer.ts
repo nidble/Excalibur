@@ -1,4 +1,4 @@
-/// <reference path='../lib/excalibur.d.ts' />
+import * as ex from '@excalibur'
 
 /*********************
  *                  uuuuuuuuuuuuuuuuuuuu
@@ -201,6 +201,36 @@ var text = new ex.Graphics.Text({
 // text.showDebug = true;
 var ran = new ex.Random(1337);
 
+var parentTest = new ex.Actor({
+  pos: ex.vec(1200, 100),
+  width: 100,
+  height: 100,
+  color: ex.Color.DarkGray,
+  collisionType: ex.CollisionType.Passive
+});
+
+var childTest = new ex.Actor({
+  pos: ex.vec(200, 0),
+  width: 20,
+  height: 20,
+  color: ex.Color.Yellow,
+  collisionType: ex.CollisionType.Passive
+});
+
+var grandChildTest = new ex.Actor({
+  pos: ex.vec(50, 0),
+  width: 20,
+  height: 20,
+  color: ex.Color.Red,
+  collisionType: ex.CollisionType.Fixed
+});
+parentTest.rx = 1;
+childTest.rx = 3;
+grandChildTest.rx = 6;
+parentTest.add(childTest.add(grandChildTest));
+
+game.add(parentTest);
+
 var canvasGraphic = new ex.Graphics.Canvas({
   width: 200,
   height: 200,
@@ -264,8 +294,31 @@ game.add(label);
 var pointer = new ex.Actor({
   width: 25,
   height: 25,
-  color: ex.Color.Red
+  color: ex.Color.Red,
+  collisionType: ex.CollisionType.Fixed
 });
+var pointerChild1 = new ex.Actor({
+  pos: ex.vec(100, 0),
+  width: 30,
+  height: 30,
+  color: ex.Color.Green,
+  collisionType: ex.CollisionType.Fixed
+});
+var pointerChild2 = new ex.Actor({
+  pos: ex.vec(0, 100),
+  width: 30,
+  height: 30,
+  color: ex.Color.Violet,
+  collisionType: ex.CollisionType.Fixed
+});
+var pointerChild3 = new ex.Actor({
+  pos: ex.vec(-100, 0),
+  width: 30,
+  height: 30,
+  color: ex.Color.Rose,
+  collisionType: ex.CollisionType.Fixed
+});
+pointer.add(pointerChild1.add(pointerChild2.add(pointerChild3)));
 game.add(pointer);
 var otherPointer = new ex.ScreenElement({
   width: 15,
