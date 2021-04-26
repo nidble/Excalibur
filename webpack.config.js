@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const version = require('./version').getCiVersion();
+const version = 'ludum-48'; // require('./version').getCiVersion();
 const pkg = require('./package.json');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -10,8 +10,8 @@ const dt = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
 module.exports = {
   mode: 'development',
   devtool: 'source-map',
-  entry: { 
-    'excalibur': './index.ts',
+  entry: {
+    excalibur: './index.ts',
     'excalibur.min': './index.ts'
   },
   context: path.resolve(__dirname, 'src/engine'),
