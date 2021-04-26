@@ -108,7 +108,7 @@ export interface EngineOptions {
   /**
    * Optionally snap drawings to nearest pixel
    */
-  snapToPixel?: boolean
+  snapToPixel?: boolean;
 
   /**
    * The [[DisplayMode]] of the game. Depending on this value, [[width]] and [[height]] may be ignored.
@@ -841,7 +841,7 @@ O|===|* >________________>\n\
 
       // only deactivate when initialized
       if (this.currentScene.isInitialized) {
-        this.currentScene._deactivate.call(this.currentScene, [oldScene, newScene]);
+        this.currentScene._deactivate.apply(this.currentScene, [oldScene, newScene]);
         this.currentScene.eventDispatcher.emit('deactivate', new DeactivateEvent(newScene, this.currentScene));
       }
 
@@ -852,7 +852,7 @@ O|===|* >________________>\n\
       // initialize the current scene if has not been already
       this.currentScene._initialize(this);
 
-      this.currentScene._activate.call(this.currentScene, [oldScene, newScene]);
+      this.currentScene._activate.apply(this.currentScene, [oldScene, newScene]);
       this.currentScene.eventDispatcher.emit('activate', new ActivateEvent(oldScene, this.currentScene));
     } else {
       this._logger.error('Scene', key, 'does not exist!');
