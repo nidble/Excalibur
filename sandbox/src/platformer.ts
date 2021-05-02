@@ -227,7 +227,7 @@ var grandChildTest = new ex.Actor({
 parentTest.rx = 1;
 childTest.rx = 3;
 grandChildTest.rx = 6;
-parentTest.add(childTest.add(grandChildTest));
+parentTest.addChild(childTest.addChild(grandChildTest));
 
 game.add(parentTest);
 
@@ -318,7 +318,7 @@ var pointerChild3 = new ex.Actor({
   color: ex.Color.Rose,
   collisionType: ex.CollisionType.Fixed
 });
-pointer.add(pointerChild1.add(pointerChild2.add(pointerChild3)));
+pointer.addChild(pointerChild1.addChild(pointerChild2.addChild(pointerChild3)));
 game.add(pointer);
 var otherPointer = new ex.ScreenElement({
   width: 15,
