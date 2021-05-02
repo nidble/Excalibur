@@ -7,12 +7,13 @@ import { Color } from '../Drawing/Color';
 import { CoordPlane, TransformComponent } from '../EntityComponentSystem/Components/TransformComponent';
 import { Entity } from '../EntityComponentSystem/Entity';
 import { Camera } from '../Camera';
-import { System, SystemType } from '../EntityComponentSystem';
+import { System, SystemType, TagComponent } from '../EntityComponentSystem';
 import { Engine } from '../Engine';
 import { GraphicsDiagnostics } from './GraphicsDiagnostics';
+import { EnterViewPortEvent, ExitViewPortEvent } from '../Events';
 
 export class GraphicsSystem extends System<TransformComponent | GraphicsComponent> {
-  public readonly types = ['transform', 'graphics'] as const;
+  public readonly types = ['ex.transform', 'ex.graphics'] as const;
   public readonly systemType = SystemType.Draw;
   public priority = 0;
   private _token = 0;
@@ -26,22 +27,33 @@ export class GraphicsSystem extends System<TransformComponent | GraphicsComponen
     this._engine = scene.engine;
   }
 
-  public sort(a: Entity<TransformComponent | GraphicsComponent>, b: Entity<TransformComponent | GraphicsComponent>) {
-    return a.components.transform.z - b.components.transform.z;
+  public sort(a: Entity, b: Entity) {
+    return a.get(TransformComponent).z - b.get(TransformComponent).z;
   }
 
-  public update(entities: Entity<GraphicsComponent | TransformComponent>[], delta: number): void {
+  public update(entities: Entity[], delta: number): void {
     this._clearScreen();
     this._token++;
     let transform: TransformComponent;
     let graphics: GraphicsComponent;
 
     for (const entity of entities) {
-      transform = entity.components.transform;
-      graphics = entity.components.graphics;
+      transform = entity.get(TransformComponent);
+      graphics = entity.get(GraphicsComponent);
 
+      // Figure out if entities are offscreen
+      const entityOffscreen = this._isOffscreen(transform, graphics);
+      if (entityOffscreen && !entity.hasTag('offscreen')) {
+        entity.eventDispatcher.emit('exitviewport', new ExitViewPortEvent(entity));
+        entity.addComponent(new TagComponent('offscreen'));
+      }
+
+      if (!entityOffscreen && entity.hasTag('offscreen')) {
+        entity.eventDispatcher.emit('enterviewport', new EnterViewPortEvent(entity));
+        entity.removeComponent('offscreen');
+      }
       // Skip entities that have graphics offscreen
-      if (this._isOffscreen(transform, graphics)) {
+      if (entityOffscreen) {
         continue;
       }
 
@@ -113,11 +125,7 @@ export class GraphicsSystem extends System<TransformComponent | GraphicsComponen
           const offsetX = -graphic.width * anchor.x + offset.x;
           const offsetY = -graphic.height * anchor.y + offset.y;
 
-          graphic?.draw(
-            this._graphicsContext,
-            offsetX + layer.offset.x,
-            offsetY + layer.offset.y
-          );
+          graphic?.draw(this._graphicsContext, offsetX + layer.offset.x, offsetY + layer.offset.y);
 
           if (this._engine?.isDebug) {
             /* istanbul ignore next */
@@ -181,11 +189,7 @@ export class GraphicsSystem extends System<TransformComponent | GraphicsComponen
   }
 
   /* istanbul ignore next */
-  private _graphicsBoundsDebugDraw(
-    entity: Entity<GraphicsComponent | TransformComponent>,
-    _transform: TransformComponent,
-    _graphics: GraphicsComponent
-  ) {
+  private _graphicsBoundsDebugDraw(entity: Entity, _transform: TransformComponent, _graphics: GraphicsComponent) {
     if (this._engine?.isDebug) {
       if (isActor(entity)) {
         const bb = entity.body.collider.localBounds.translate(entity.getGlobalPos());
