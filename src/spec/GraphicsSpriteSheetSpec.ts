@@ -20,7 +20,7 @@ describe('A SpriteSheet for Graphics', () => {
   });
 
   it('can be created with a constructor', async () => {
-    const image = new ex.Graphics.ImageSource('base/src/spec/images/GraphicsTextSpec/spritefont.png');
+    const image = new ex.Graphics.ImageSource('src/spec/images/GraphicsTextSpec/spritefont.png');
 
     await image.load();
     const ss = new ex.Graphics.SpriteSheet({
@@ -33,7 +33,7 @@ describe('A SpriteSheet for Graphics', () => {
   });
 
   it('can be created from a grid', async () => {
-    const image = new ex.Graphics.ImageSource('base/src/spec/images/GraphicsTextSpec/spritefont.png');
+    const image = new ex.Graphics.ImageSource('src/spec/images/GraphicsTextSpec/spritefont.png');
 
     await image.load();
     const ss = ex.Graphics.SpriteSheet.fromGrid({
@@ -52,7 +52,7 @@ describe('A SpriteSheet for Graphics', () => {
   });
 
   it('can be created from a grid with interesting spacing', async () => {
-    const image = new ex.Graphics.ImageSource('base/src/spec/images/SpriteSheetSpec/kenny-cards.png');
+    const image = new ex.Graphics.ImageSource('src/spec/images/SpriteSheetSpec/kenny-cards.png');
 
     await image.load();
 
@@ -83,7 +83,7 @@ describe('A SpriteSheet for Graphics', () => {
   });
 
   it('can be created from a legacy sprite sheet', async () => {
-    const texture = new ex.Texture('base/src/spec/images/GraphicsTextSpec/spritefont.png');
+    const texture = new ex.Texture('src/spec/images/GraphicsTextSpec/spritefont.png');
     await texture.load();
 
     const legacy = new ex.SpriteSheet({

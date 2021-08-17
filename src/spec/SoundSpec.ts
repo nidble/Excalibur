@@ -11,8 +11,8 @@ describe('Sound resource', () => {
   });
 
   beforeEach(() => {
-    sut = new ex.Sound('base/src/spec/images/SoundSpec/test.mp3');
-    expect(sut.path).toBe('base/src/spec/images/SoundSpec/test.mp3');
+    sut = new ex.Sound('src/spec/images/SoundSpec/test.mp3');
+    expect(sut.path).toBe('src/spec/images/SoundSpec/test.mp3');
   });
 
 
