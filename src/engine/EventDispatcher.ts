@@ -51,7 +51,7 @@ export class EventDispatcher<T = any> implements Eventable {
       len = this._handlers[eventName].length;
 
       for (i; i < len; i++) {
-        this._handlers[eventName][i].call(target, event);
+        this._handlers[eventName][i](event);
       }
     }
 
@@ -73,7 +73,7 @@ export class EventDispatcher<T = any> implements Eventable {
     if (!this._handlers[eventName]) {
       this._handlers[eventName] = [];
     }
-    this._handlers[eventName].push(handler);
+    this._handlers[eventName].push(handler.bind(this._target));
 
     // meta event handlers
     if (eventName !== 'unsubscribe' && eventName !== 'subscribe') {
@@ -124,7 +124,7 @@ export class EventDispatcher<T = any> implements Eventable {
       }
 
       this.off(eventName, handler);
-      handler.call(ev.target, ev);
+      handler(ev);
     };
 
     this.on(eventName, metaHandler);
